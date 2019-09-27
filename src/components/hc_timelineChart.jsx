@@ -2,10 +2,11 @@ import React, { Component } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import timeline from 'highcharts/modules/timeline'
+import { spaceDataSet, spaceDataSetLine } from '../util/dataSet'
 
 timeline(Highcharts)
 
-export class TimelineChart extends Component {
+export class HC_TimelineChart extends Component {
 
     componentDidMount() {
         this.highChartsRender()
@@ -20,29 +21,32 @@ export class TimelineChart extends Component {
             xAxis: {
                 type: 'datetime',
                 visible: false
-              },
-              yAxis: {
+            },
+            yAxis: {
                 gridLineWidth: 1,
                 title: null,
                 labels: {
-                  enabled: false
+                    enabled: false
                 }
-              },
-              legend: {
+            },
+            legend: {
                 enabled: false
-              },
-              title: {
+            },
+            title: {
                 text: 'Timeline of Space Exploration'
-              },
-              subtitle: {
+            },
+            subtitle: {
                 text: 'Info source: <a href="https://en.wikipedia.org/wiki/Timeline_of_space_exploration">www.wikipedia.org</a>'
-              },
-              tooltip: {
+            },
+            tooltip: {
                 style: {
                   width: 300
                 }
-              },
-              series: [{
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
                 dataLabels: {
                   allowOverlap: false,
                   format: '<span style="color:{point.color}">● </span><span style="font-weight: bold;" > ' +
@@ -51,23 +55,7 @@ export class TimelineChart extends Component {
                 marker: {
                   symbol: 'circle'
                 },
-                data: [{
-                  x: Date.UTC(1951, 5, 22),
-                  name: 'First dogs in space',
-                  label: 'First dogs in space',
-                }, {
-                  x: Date.UTC(1957, 9, 4),
-                  name: 'First artificial satellite',
-                  label: 'First artificial satellite',
-                }, {
-                  x: Date.UTC(1959, 0, 4),
-                  name: 'First artificial satellite to reach the Moon',
-                  label: 'First artificial satellite to reach the Moon',
-                }, {
-                  x: Date.UTC(1961, 3, 12),
-                  name: 'First human spaceflight',
-                  label: 'First human spaceflight',
-                }]
+                data: spaceDataSet
             }]
         })
     }
@@ -75,10 +63,16 @@ export class TimelineChart extends Component {
     render() {
         const chartOptions = {
             title: {
-                text: 'My chart'
+                text: ''
+            },
+            credits: {
+                enabled: false
+            },
+            xAxis: {
+                type: 'datetime'
             },
             series: [{
-                data: [1, 2, 3]
+                data: spaceDataSetLine
             }]
         }
 
