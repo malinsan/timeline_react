@@ -9,7 +9,7 @@ class Root extends React.Component {
     render() {
         return (
             <BrowserRouter>
-                <Route route='/' component={EVLLayout} />
+                <Route path='/' component={EVLLayout} />
             </BrowserRouter>
         )
     }

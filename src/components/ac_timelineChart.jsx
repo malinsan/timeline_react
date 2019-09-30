@@ -1,7 +1,8 @@
 import React from 'react'
-import Chart from 'react-apexcharts'
 
-export class AC_timelineChart extends React.Component {
+export class AC_TimelineChart extends React.Component {
+
+
     render() {
         const options = {
             chart: {
@@ -10,10 +11,8 @@ export class AC_timelineChart extends React.Component {
             series: [{
                 data: [1, 2, 3]
             }]
-            
-
         }
 
-        return <div>Hello där</div>
+        return <div>HEJ </div>  
     }
 }

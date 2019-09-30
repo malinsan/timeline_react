@@ -2,15 +2,15 @@ import React, { Component } from 'react'
 import { Switch, Route, Link } from 'react-router-dom'
 import { Layout, Menu, Icon } from 'antd'
 import { HC_TimelineChart } from "./components/hc_timelineChart"
-import { AC_timelineChart } from './components/ac_timelineChart'
+import { AC_TimelineChart } from './components/ac_timelineChart'
 
 const { Header, Content, Footer } = Layout
 
 export class EVLLayout extends Component {
 
     menu = [
-        {exact: true, path: '/', component: <HC_TimelineChart />, icon: <Icon type='experiment' />, name: 'Highcharts'},
-        {path: '/apexchart', component: <AC_timelineChart />, icon: <Icon type='crown' />, name: 'Apexcharts'}
+        {exact: true, path: '/', component: HC_TimelineChart, icon: <Icon type='experiment' />, name: 'Highcharts'},
+        {path: '/apexchart', component: AC_TimelineChart, icon: <Icon type='crown' />, name: 'Apexcharts'}
     ]
 
     get routes() {
@@ -19,13 +19,13 @@ export class EVLLayout extends Component {
 
     createRoute({ path, component, exact }) {
         if (exact) {
-            return <Route key={path} exact path={path} render={() => component} />
+            return <Route key={path} exact path={path} component={component} />
         }
 
         return <Route 
                     key={path}
                     path={path}
-                    render={() => component}
+                    component={component}
                 />
     }
 
