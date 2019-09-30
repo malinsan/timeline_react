@@ -67,10 +67,8 @@ export class EVLLayout extends Component {
                         {this.menuItems}
                     </Menu>
                 </Header>
-                <Content  style={{ padding: '0 12px', minHeight: 280 }}>
-                    <Switch>
-                        {this.routes}
-                    </Switch>
+                <Content style={{ align: 'center', background: '#fff', margin: '10px', padding: '24px', minHeight: 500 }}>
+                    <Switch>{ this.routes }</Switch>
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>
                     EVLedger ©2019 Created by Malin Thelin
