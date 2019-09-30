@@ -54,8 +54,6 @@ export class EVLLayout extends Component {
 
 
     render(){
-        console.log(this.state.selectedKeys)
-
         return(
         <div className="Layout">
             <Layout>
