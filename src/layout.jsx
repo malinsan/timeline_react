@@ -8,9 +8,13 @@ const { Header, Content, Footer } = Layout
 
 export class EVLLayout extends Component {
 
+    state = {
+        selectedKeys: ['/'+this.props.history.location.pathname.split('/')[1]]
+    }
+
     menu = [
         {exact: true, path: '/', component: HC_TimelineChart, icon: <Icon type='experiment' />, name: 'Highcharts'},
-        {path: '/apexchart', component: AC_TimelineChart, icon: <Icon type='crown' />, name: 'Apexcharts'}
+        {path: '/apexcharts', component: AC_TimelineChart, icon: <Icon type='crown' />, name: 'Apexcharts'}
     ]
 
     get routes() {
@@ -32,7 +36,7 @@ export class EVLLayout extends Component {
 
     get menuItems() {
         return this.menu.map(e =>
-            <Menu.Item key={e.name}>
+            <Menu.Item key={e.path}>
                 <Link to={e.path}>
                     {e.icon}{e.name}
                 </Link>
@@ -40,9 +44,17 @@ export class EVLLayout extends Component {
         )
     }
 
+    componentDidUpdate(prevProps) {
+        if (prevProps != this.props) {
+            this.setState({
+                selectedKeys: ['/' + this.props.history.location.pathname.split('/')[1]],
+            });    
+        }
+    }
+
 
     render(){
-        console.log(this.props.location)
+        console.log(this.state.selectedKeys)
 
         return(
         <div className="Layout">
@@ -52,7 +64,7 @@ export class EVLLayout extends Component {
                         style={{ lineHeight: '64px' }}
                         mode='horizontal'
                         theme='dark'
-                        defaultSelectedKeys={['highcharts']}
+                        selectedKeys={this.state.selectedKeys}
                     >
                         {this.menuItems}
                     </Menu>
@@ -62,7 +74,9 @@ export class EVLLayout extends Component {
                         {this.routes}
                     </Switch>
                 </Content>
-                <Footer style={{ textAlign: 'center' }}>EVLedger ©2019 Created by Malin Thelin</Footer>
+                <Footer style={{ textAlign: 'center' }}>
+                    EVLedger ©2019 Created by Malin Thelin
+                </Footer>
             </Layout>
         </div>
         )
