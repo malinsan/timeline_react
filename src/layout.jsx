@@ -3,7 +3,8 @@ import { Switch, Route, Link } from 'react-router-dom'
 import { Layout, Menu, Icon } from 'antd'
 import { HC_TimelineChart } from "./components/hc_timelineChart"
 import { AC_TimelineChart } from './components/ac_timelineChart'
-import { TestGroupChart } from './components/testOfGruping'
+import * as cc from "./util/chartconfig";
+import { TestView } from './views/testView'
 
 const { Header, Content, Footer } = Layout
 
@@ -16,7 +17,7 @@ export class EVLLayout extends Component {
     menu = [
         {exact: true, path: '/', component: HC_TimelineChart, icon: <Icon type='experiment' />, name: 'Highcharts'},
         {path: '/apexcharts', component: AC_TimelineChart, icon: <Icon type='crown' />, name: 'Apexcharts'},
-        {path: '/test', component: TestGroupChart, icon: <Icon type='smile' />, name: 'Test Whatever'}
+        {path: '/test', component: TestView, icon: <Icon type='smile' />, name: 'Test Whatever'}
     ]
 
     get routes() {
