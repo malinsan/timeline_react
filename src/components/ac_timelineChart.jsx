@@ -41,17 +41,6 @@ export class AC_TimelineChart extends React.Component {
                         lines: { show: false }
                     }
                 },
-                /*
-                yaxis: {
-                    axisTicks: { show: false },
-                    labels: { minWidth: 10, style: { color: 'rgba(0, 0, 0, 0)' } }
-                },
-                xaxis: {
-                    floating: true,
-                    axisTicks: { show: false },
-                    axisBorder: { show: false },
-                    labels: { show: false },
-                }, */
                 /* markers: {
                     size: 8,
                     colors: colors.evOrange,
