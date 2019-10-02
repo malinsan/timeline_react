@@ -9,30 +9,30 @@ Apex = {
     },
     toolbar: {
         tools: {
-        selection: false
+            selection: false
         }
     },
     markers: {
         size: 6,
         hover: {
-        size: 10
+            size: 10
         }
     },
     tooltip: {
         followCursor: false,
         theme: 'dark',
         x: {
-        show: false
+            show: false
         },
         marker: {
-        show: false
+            show: false
         },
         y: {
-        title: {
-            formatter: function () {
-            return ''
+            title: {
+                formatter: function () {
+                return ''
+                }
             }
-        }
         }
     },
     grid: {

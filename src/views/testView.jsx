@@ -8,7 +8,6 @@ export class TestView extends React.Component {
     constructor(props) {
         super(props)
         this.onDrag = this.onDrag.bind(this)
-        this.chartRef = React.createRef() 
     }
 
     data = [[1991, 1], [1992, 1], [1993, 1], [1994, 1], [1995, 1], [1996,1], [1997,1], [1998,1], [1999,1]]
@@ -30,16 +29,13 @@ export class TestView extends React.Component {
         }],
     }
 
-    componentDidMount() {
-        console.log(this.chartRef.current)
-    }
-
     onDrag(buttonValue) {
         this.setState({ buttonValue })
     }
 
     render() {
         const { buttonValue, options, series } = this.state
+        console.log('yobdro')
 
         return (
             <div>
@@ -54,7 +50,6 @@ export class TestView extends React.Component {
                             type="line"
                             width="100%"
                             height="500px"
-                            ref={this.chartRef}
                         />
                     </Col>
                     <Col span={1}>
