@@ -10,13 +10,15 @@ export class AC_TimelineChart extends React.Component {
             options: {
                 chart: {
                     id: "basic-bar",
+                    group: 'lol',
                     toolbar: { show: false }
                 },
-                xaxis: { categories: this.data.map(e => e[0]) }
+                xaxis: { categories: this.data.map(e => {console.log(e[0]); return e[0]}) },
+                yaxis: { labels: { minWidth: 10 } }
             },
             series: [{
               name: "series-1",
-              data: [30, 40, 45, 50, 49, 60, 70, 91]
+              data: [30, 40, 45, 50, 49, 60, 70, 91,34]
             }],
             
             timelineOptions: {
@@ -25,7 +27,7 @@ export class AC_TimelineChart extends React.Component {
                     events: {
                         dataPointsMouseEnter: () => console.log('HALLÅ ELLER')
                     },
-                    
+                    group: 'lol'        
                 },
                 tooltip: {
                     shared: false,
@@ -38,7 +40,7 @@ export class AC_TimelineChart extends React.Component {
                 },
                 yaxis: {
                     axisTicks: { show: false },
-                    labels: { style: { color: 'rgba(0, 0, 0, 0)' } }
+                    labels: { minWidth: 10, style: { color: 'rgba(0, 0, 0, 0)' } }
                 },
                 xaxis: {
                     floating: true,
@@ -46,7 +48,6 @@ export class AC_TimelineChart extends React.Component {
                     axisBorder: { show: false },
                     labels: { show: false },
                 },
-                //annotations: { points: this.data.map(this.createPoints) }
                 markers: {
                     size: 8,
                     colors: colors.evOrange,
@@ -62,29 +63,6 @@ export class AC_TimelineChart extends React.Component {
 
     data = [[1991, 1], [1992, 1], [1993, 1], [1994, 1], [1995, 1], [1996,1], [1997,1], [1998,1], [1999,1]]
 
-    createPoints(e) {
-        return {
-            x: e[0],
-            y: e[1],
-            marker: {
-                size: 8,
-                fillColor: '#fff',
-                strokeColor: 'red',
-                radius: 2,
-                cssClass: 'apexcharts-custom-class'
-            },
-            label: {
-                borderColor: '#FF4560',
-                offsetY: 0,
-                style: {
-                    color: '#fff',
-                    background: '#FF4560'
-                },
-                text: 'Hallå eller'
-            }
-        }
-    }
-    
     render() {
         const { options, series, timelineOptions } = this.state
 
