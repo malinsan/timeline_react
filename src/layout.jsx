@@ -17,11 +17,18 @@ export class EVLLayout extends Component {
     menu = [
         {exact: true, path: '/', component: HC_TimelineChart, icon: <Icon type='experiment' />, name: 'Highcharts'},
         {path: '/apexcharts', component: AC_TimelineChart, icon: <Icon type='crown' />, name: 'Apexcharts'},
-        {path: '/test', component: TestView, icon: <Icon type='smile' />, name: 'Test Whatever'}
+        {path: 'test', icon: <Icon type='smile' />, name: 'Test Whatever', submenu: [
+            {path: '/dragbutton', component: TestView, icon: <Icon type='circle' />, name: 'Drag test'}
+        ]}
     ]
 
     get routes() {
-        return this.menu.map(this.createRoute)
+        const menuItemList = this.menu.map(m => m.submenu || [m]).flat()
+        console.log(menuItemList)
+        const menuItemsWithComponent = menuItemList.filter(m => m.component)
+        const routeNodes = menuItemsWithComponent.map(this.createRoute)
+
+        return [...routeNodes]
     }
 
     createRoute({ path, component, exact }) {
@@ -36,15 +43,27 @@ export class EVLLayout extends Component {
                 />
     }
 
+    createMenuItem({ path, icon, name, submenu }) {
+        if (submenu) {
+            return (
+                <Menu.SubMenu key={path} title={<span>{icon}<span>{name}</span></span>}>
+                    {submenu.map((x) => this.createMenuItem(x))}
+                </Menu.SubMenu>
+            )
+        }
 
-    get menuItems() {
-        return this.menu.map(e =>
-            <Menu.Item key={e.path}>
-                <Link to={e.path}>
-                    {e.icon}{e.name}
+        return (
+            <Menu.Item key={path}>
+                <Link to={path}>
+                    {icon}{name}
                 </Link>
             </Menu.Item>
         )
+    }
+
+
+    get menuItems() {
+        return this.menu.map(e => this.createMenuItem(e))
     }
 
     componentDidUpdate(prevProps) {
