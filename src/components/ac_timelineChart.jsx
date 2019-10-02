@@ -9,11 +9,11 @@ export class AC_TimelineChart extends React.Component {
         this.state = {
             options: {
                 chart: {
-                    id: "basic-bar",
+                    id: "line-chart",
                     group: 'lol',
                     toolbar: { show: false }
                 },
-                xaxis: { categories: this.data.map(e => {console.log(e[0]); return e[0]}) },
+                xaxis: { categories: this.data.map(e => e[0]) },
                 yaxis: { labels: { minWidth: 10 } }
             },
             series: [{
@@ -22,22 +22,26 @@ export class AC_TimelineChart extends React.Component {
             }],
             
             timelineOptions: {
-                chart: { 
-                    toolbar: { show: false },
-                    events: {
-                        dataPointsMouseEnter: () => console.log('HALLÅ ELLER')
-                    },
-                    group: 'lol'        
+                chart: {
+                    id: "timeline-chart",
+                    group: 'lol',
+                    toolbar: { show: false }
                 },
-                tooltip: {
-                    shared: false,
-                    intersect: true
+                xaxis: { 
+                    categories: this.data.map(e => e[0]),
+                    floating: true,
+                    axisTicks: { show: false },
+                    axisBorder: { show: false }
+                },
+                yaxis: { 
+                    labels: { minWidth: 10, style: { color: 'rgba(0, 0, 0, 0)' } }, 
                 },
                 grid: {
                     yaxis: {
                         lines: { show: false }
                     }
                 },
+                /*
                 yaxis: {
                     axisTicks: { show: false },
                     labels: { minWidth: 10, style: { color: 'rgba(0, 0, 0, 0)' } }
@@ -47,8 +51,8 @@ export class AC_TimelineChart extends React.Component {
                     axisTicks: { show: false },
                     axisBorder: { show: false },
                     labels: { show: false },
-                },
-                markers: {
+                }, */
+                /* markers: {
                     size: 8,
                     colors: colors.evOrange,
                     strokeColors: '#fff',
@@ -56,7 +60,7 @@ export class AC_TimelineChart extends React.Component {
                     hover: {
                         size: 14
                     }
-                }
+                } */
             }
         }
     }
@@ -70,8 +74,10 @@ export class AC_TimelineChart extends React.Component {
         return (<div>
             <Chart
                 options={timelineOptions}
-                series={[{ data: this.data }]}
-                height="100px"
+                series={[{ data: this.data.map(() => 1) }]}
+                type='line'
+                width='100%'
+                height='150px'
             />
             <Chart
                 options={options}

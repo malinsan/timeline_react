@@ -56,7 +56,7 @@ grid: {
     clipMarkers: false
 },
 yaxis: {
-    tickAmount: 2
+    tickAmount: 3
 },
 xaxis: {
     type: 'datetime'
