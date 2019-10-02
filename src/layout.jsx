@@ -5,6 +5,7 @@ import { HC_TimelineChart } from "./components/hc_timelineChart"
 import { AC_TimelineChart } from './components/ac_timelineChart'
 import * as cc from "./util/chartconfig";
 import { TestView } from './views/testView'
+import { TestD3View } from './views/testDView'
 
 const { Header, Content, Footer } = Layout
 
@@ -18,13 +19,13 @@ export class EVLLayout extends Component {
         {exact: true, path: '/', component: HC_TimelineChart, icon: <Icon type='experiment' />, name: 'Highcharts'},
         {path: '/apexcharts', component: AC_TimelineChart, icon: <Icon type='crown' />, name: 'Apexcharts'},
         {path: 'test', icon: <Icon type='smile' />, name: 'Test Whatever', submenu: [
-            {path: '/dragbutton', component: TestView, icon: <Icon type='circle' />, name: 'Drag test'}
+            {path: '/dragbutton', component: TestView, icon: <Icon type='edit' />, name: 'Drag test'},
+            {path: '/d3', component: TestD3View, icon: <Icon type='diff' />, name: 'D3 test'}
         ]}
     ]
 
     get routes() {
         const menuItemList = this.menu.map(m => m.submenu || [m]).flat()
-        console.log(menuItemList)
         const menuItemsWithComponent = menuItemList.filter(m => m.component)
         const routeNodes = menuItemsWithComponent.map(this.createRoute)
 

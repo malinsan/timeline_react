@@ -35,7 +35,6 @@ export class TestView extends React.Component {
 
     render() {
         const { buttonValue, options, series } = this.state
-        console.log('yobdro')
 
         return (
             <div>
