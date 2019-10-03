@@ -8,39 +8,30 @@ export class LineChart extends React.Component {
     }
 
     drawChart() {
-        const data = [[1991, 34], [1992, 55], [1993,67], [1994, 98], [1995, 92]]
-        /* const dateData = data.map(d => {return { date: d3.timeFormat("%Y-%m-%d")(new Date(d[0],1)), value: d[1] }})
-        const h = 700
-        const w = 1500
+        const { data } = this.props
+        var { height, width, xaxis, yaxis } = this.props
 
-        const svg = d3.select(this.refs.canvas)
-                    .append("svg")
-                    .attr("width", w)
-                    .attr("height", h) */
+        var margin = { top: 10, right: 30, bottom: 30, left: 60 }
+        height -= margin.top - margin.bottom
+        width -= margin.left - margin.right
 
-
-        // set the dimensions and margins of the graph
-        var margin = {top: 10, right: 30, bottom: 30, left: 60},
-        width = 460 - margin.left - margin.right,
-        height = 400 - margin.top - margin.bottom
-
-        // append the svg object to the body of the page
+        // CREATE CANVAS
         var svg = d3.select(this.refs.canvas)
-                .append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-                .append("g")
-                .attr("transform",
-                    "translate(" + margin.left + "," + margin.top + ")");
+                .append('svg')
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom)
+                .append('g')
+                .attr('transform',
+                    `translate(${margin.left}, ${margin.top})`)
 
 
         // X AXIS
         var xScale = d3.scaleTime() 
-                    .domain(d3.extent(data, d => new Date(d[0],1))).nice()
+                    .domain(d3.extent(data, d => d[0])).nice()
                     .range([0, width]);
           
         var xAxis = d3.axisBottom(xScale)
-                    .tickFormat(d3.timeFormat("%Y"))
+                    .tickFormat(d3.timeFormat('%Y'))
                     .ticks(d3.timeYear)
 
         // YAXIS
@@ -50,16 +41,31 @@ export class LineChart extends React.Component {
     
         var yAxis = d3.axisLeft(yScale)
 
+        // PATH
+        var line = d3.line()
+                    .x(d => xScale(d[0])) // set the x values for the line generator
+                    .y(d => yScale(d[1])) // set the y values for the line generator 
+                    .curve(d3.curveMonotoneX) // apply smoothing to the line
+        
+        // DRAWING 
 
-        svg.append("g")
-        .attr("transform", `translate(0,${height})`)
-            .call(xAxis);
+        if (!xaxis || xaxis && xaxis.show) {
+            svg.append('g')
+                .attr('transform', `translate(0,${height})`)
+                .call(xAxis)
+        }
 
-        svg.append('g')
+        if (!yaxis || yaxis && yaxis.show) {
+            svg.append('g')
             .call(yAxis)
-          
+        }
+       
+        svg.append('path')
+        .attr('fill', 'none')
+        .attr('stroke', 'steelblue')
+        .attr('stroke-width', 1.5)
+        .attr('d', line(data))
 
-  
     }
 
     render() {
