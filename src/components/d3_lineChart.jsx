@@ -7,6 +7,9 @@ export class LineChart extends React.Component {
         super(props)
 
         this.state = {...props}
+
+        this.handleMouseOver = this.handleMouseOver.bind(null, this)
+        this.handleMouseOut = this.handleMouseOut.bind(null, this)
     }
 
     componentDidMount() {
@@ -81,21 +84,21 @@ export class LineChart extends React.Component {
             .attr("cy", d => yScale(d[1]))
             .attr('r', markers.size || 5)
             .attr('fill', markers.color)
-            .on('mouseover', (d, i, e) => this.handleMouseOver(markers, i, e)) // TODO Write better maybe? Want to reach 'markers' without having to send as parameter because ugly.
-            .on("mouseout", (d, i, e) => this.handleMouseOut(markers, i, e))
+            .on('mouseover', this.handleMouseOver)
+            .on("mouseout", this.handleMouseOut)
         }
     }
 
-    handleMouseOver = (markers, i, e) => {
-        let marker = e[i]
+    handleMouseOver(lineChart, obj, i, mList) {
+        let marker = mList[i]
         d3.select(marker)
-        .attr('r', markers.hoverSize || d3.select(marker).attr('r') * 2)
+        .attr('r', lineChart.state.markers.hoverSize || d3.select(marker).attr('r') * 2)
     }
 
-    handleMouseOut = (markers, i, e) => {
-        let marker = e[i]
+    handleMouseOut(lineChart, obj, i, mList) {
+        let marker = mList[i]
         d3.select(marker)
-        .attr('r', markers.size || 5)
+        .attr('r', lineChart.state.markers.size || 5)
     }
 
     render() {
