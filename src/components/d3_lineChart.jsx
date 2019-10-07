@@ -88,15 +88,15 @@ export class LineChart extends React.Component {
 
     handleMouseOver(lineChart, obj, i, mList) {
         let marker = d3.select(mList[i])
-        marker.attr('r', lineChart.state.markers.hoverSize || marker.attr('r') * 2)
+        marker.attr('r', lineChart.props.markers.hoverSize || marker.attr('r') * 2)
 
-        lineChart.drawDashedLineDown(marker.attr('cx'), marker.attr('cy'))
-        lineChart.props.callback(marker.attr('cx'), 0)
+        //lineChart.drawDashedLineDown(marker.attr('cx'), marker.attr('cy'))
+        lineChart.props.callback(marker.attr('cx'), marker.attr('cy'))
     }
 
     handleMouseOut(lineChart, obj, i, mList) {
         let marker = d3.select(mList[i])
-        marker.attr('r', lineChart.state.markers.size || 5)
+        marker.attr('r', lineChart.props.markers.size || 5)
     }
 
     drawDashedLineDown(x1, y1) {

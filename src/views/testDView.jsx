@@ -36,7 +36,7 @@ export class TestD3View extends React.Component {
             color: this.sharedOptions.color,
             hoverSize: 10,
         },
-        //callback: (x,y) => this.drawDashedLineDown(x,y)
+        callback: (x,y) => this.drawDashedLineDown(x,y)
     }
 
     componentDidMount() {
@@ -56,8 +56,8 @@ export class TestD3View extends React.Component {
         this.setState({ svg })
     }
 
-    /* drawDashedLineDown(x1, y1) {
-        const y2 = y1 + this.chartOptions.height + this.timelineOptions.height
+    drawDashedLineDown(x1, y1) {
+        const y2 = parseInt(y1 + this.chartOptions.height + this.timelineOptions.height)
 
         this.state.svg.append("line")          // attach a line
             .style("stroke", "black")  // colour the line
@@ -66,7 +66,7 @@ export class TestD3View extends React.Component {
             .attr("y1", y1)      // y position of the first end of the line
             .attr("x2", x1)     // x position of the second end of the line
             .attr("y2", y2)
-    } */
+    }
 
     render() {
         return (<div ref='chartcanvas'>
