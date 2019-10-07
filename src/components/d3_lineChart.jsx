@@ -6,34 +6,30 @@ export class LineChart extends React.Component {
     constructor(props) {
         super(props)
 
-        this.state = {...props}
-
         this.handleMouseOver = this.handleMouseOver.bind(null, this)
         this.handleMouseOut = this.handleMouseOut.bind(null, this)
     }
 
-    componentDidMount() {
-        this.drawChart()
+    componentDidUpdate(prevProps) {
+        if (this.props.svg !== prevProps.svg && typeof this.props.svg === 'object') {
+            this.drawChart()
+        }
     }
 
     drawChart() {
-        const { data, xaxis, yaxis, markers, color } = this.state
-        var { height, width } = this.state
+        const { data, xaxis, yaxis, markers, color, margin_top } = this.props
+        var { svg, height, width } = this.props
 
         var margin = { top: 10, right: 30, bottom: 30, left: 60 }
         height -= margin.top - margin.bottom
         width -= margin.left - margin.right
 
-        // CREATE CANVAS
-        var svg = d3.select(this.refs.canvas)
-                .append('svg')
-                .attr('width', width + margin.left + margin.right)
-                .attr('height', height + margin.top + margin.bottom)
-                .append('g')
-                .attr('transform',
-                    `translate(${margin.left}, ${margin.top})`)
+        var chart = svg.append('g')
+            .attr('height', height)
+            .attr('width', width)
+            .attr('transform', `translate(0,${margin_top || 0})`)
 
-        // X AXIS
+         // X AXIS
         var xScale = d3.scaleTime() 
                     .domain(d3.extent(data, d => d[0])).nice()
                     .range([0, width]);
@@ -55,20 +51,19 @@ export class LineChart extends React.Component {
                     .y(d => yScale(d[1])) // set the y values for the line generator 
                     .curve(d3.curveCardinal) // apply smoothing to the line
 
-        // DRAWING 
-
+        // DRAWING
         if (!xaxis || xaxis && xaxis.show) {
-            svg.append('g')
+            chart.append('g')
                 .attr('transform', `translate(0,${height})`)
                 .call(xAxis)
         }
 
         if (!yaxis || yaxis && yaxis.show) {
-            svg.append('g')
+            chart.append('g')
             .call(yAxis)
         }
-       
-        svg.append('path')
+
+        chart.append('path')
         .attr('fill', 'none')
         .attr('stroke', color)
         .attr('stroke-width', 1.5)
@@ -76,7 +71,7 @@ export class LineChart extends React.Component {
 
         // MARKERS
         if (markers) {
-            svg.selectAll(".dot")
+            chart.selectAll(".dot")
             .data(data)
             .enter().append("circle")
             .attr("class", "dot")
@@ -87,18 +82,33 @@ export class LineChart extends React.Component {
             .on('mouseover', this.handleMouseOver)
             .on("mouseout", this.handleMouseOut)
         }
+
+        this.setState({ svg })
     }
 
     handleMouseOver(lineChart, obj, i, mList) {
-        let marker = mList[i]
-        d3.select(marker)
-        .attr('r', lineChart.state.markers.hoverSize || d3.select(marker).attr('r') * 2)
+        let marker = d3.select(mList[i])
+        marker.attr('r', lineChart.state.markers.hoverSize || marker.attr('r') * 2)
+
+        lineChart.drawDashedLineDown(marker.attr('cx'), marker.attr('cy'))
+        lineChart.props.callback(marker.attr('cx'), 0)
     }
 
     handleMouseOut(lineChart, obj, i, mList) {
-        let marker = mList[i]
-        d3.select(marker)
-        .attr('r', lineChart.state.markers.size || 5)
+        let marker = d3.select(mList[i])
+        marker.attr('r', lineChart.state.markers.size || 5)
+    }
+
+    drawDashedLineDown(x1, y1) {
+        const y2 = y1 + this.state.height
+
+        this.props.svg.append("line")          // attach a line
+            .style("stroke", "black")  // colour the line
+            .attr('stroke-width', 3)
+            .attr("x1", x1)     // x position of the first end of the line
+            .attr("y1", y1)      // y position of the first end of the line
+            .attr("x2", x1)     // x position of the second end of the line
+            .attr("y2", y2)
     }
 
     render() {
