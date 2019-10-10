@@ -50,29 +50,27 @@ export class TestD3View extends React.Component {
         svg = d3.select(this.refs.chartcanvas)
                 .append('svg')
                 .attr('width', 1000)
-                .attr('height',800)
-                .attr('fill', 'black')
+                .attr('height', 800)
                 .append('g').attr('transform', 'translate(60,10)')
 
         this.setState({ svg })
     }
 
     drawDashedLineDown(i, x1, y1) {
-        const y2 = parseInt(y1 + this.chartOptions.height)
-
-        this.state.svg.append("line")          // attach a line
-            .style("stroke", "black")  // colour the line
+        const y2 = parseInt(y1) + this.chartOptions.height + this.timelineOptions.height
+        
+        this.state.svg.append("line")
+            .style("stroke", colors.evGrayDark)
             .attr("class", `line_${i}`)
-            .attr('stroke-width', 3)
-            .attr("x1", x1)     // x position of the first end of the line
-            .attr("y1", y1)      // y position of the first end of the line
-            .attr("x2", x1)     // x position of the second end of the line
+            .attr('stroke-width', 1)
+            .attr('stroke-dasharray', 4)
+            .attr("x1", x1)
+            .attr("y1", y1)
+            .attr("x2", x1)
             .attr("y2", y2)
     }
 
     removeLine(i) {
-        console.log(i)
-        var lol = this.state.svg.select(`.line_${i}`)
         d3.select(`.line_${i}`).remove()
     }
 
