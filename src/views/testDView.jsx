@@ -36,7 +36,8 @@ export class TestD3View extends React.Component {
             color: this.sharedOptions.color,
             hoverSize: 10,
         },
-        callback: (x,y) => this.drawDashedLineDown(x,y)
+        drawLine: (i,x,y) => this.drawDashedLineDown(i,x,y),
+        removeLine: (i) => this.removeLine(i)
     }
 
     componentDidMount() {
@@ -56,16 +57,23 @@ export class TestD3View extends React.Component {
         this.setState({ svg })
     }
 
-    drawDashedLineDown(x1, y1) {
-        const y2 = parseInt(y1 + this.chartOptions.height + this.timelineOptions.height)
+    drawDashedLineDown(i, x1, y1) {
+        const y2 = parseInt(y1 + this.chartOptions.height)
 
         this.state.svg.append("line")          // attach a line
             .style("stroke", "black")  // colour the line
+            .attr("class", `line_${i}`)
             .attr('stroke-width', 3)
             .attr("x1", x1)     // x position of the first end of the line
             .attr("y1", y1)      // y position of the first end of the line
             .attr("x2", x1)     // x position of the second end of the line
             .attr("y2", y2)
+    }
+
+    removeLine(i) {
+        console.log(i)
+        var lol = this.state.svg.select(`.line_${i}`)
+        d3.select(`.line_${i}`).remove()
     }
 
     render() {

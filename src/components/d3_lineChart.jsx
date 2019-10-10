@@ -86,29 +86,19 @@ export class LineChart extends React.Component {
         this.setState({ svg })
     }
 
-    handleMouseOver(lineChart, obj, i, mList) {
-        let marker = d3.select(mList[i])
+    handleMouseOver(lineChart, obj, i, markerList) {
+        let marker = d3.select(markerList[i])
         marker.attr('r', lineChart.props.markers.hoverSize || marker.attr('r') * 2)
 
-        //lineChart.drawDashedLineDown(marker.attr('cx'), marker.attr('cy'))
-        lineChart.props.callback(marker.attr('cx'), marker.attr('cy'))
+        //lineChart.props.callback(marker.attr('cx'), marker.attr('cy'))
+        lineChart.props.drawLine(i, marker.attr('cx'), marker.attr('cy'))
     }
 
-    handleMouseOut(lineChart, obj, i, mList) {
-        let marker = d3.select(mList[i])
+    handleMouseOut(lineChart, obj, i, markerList) {
+        let marker = d3.select(markerList[i])
         marker.attr('r', lineChart.props.markers.size || 5)
-    }
 
-    drawDashedLineDown(x1, y1) {
-        const y2 = y1 + this.state.height
-
-        this.props.svg.append("line")          // attach a line
-            .style("stroke", "black")  // colour the line
-            .attr('stroke-width', 3)
-            .attr("x1", x1)     // x position of the first end of the line
-            .attr("y1", y1)      // y position of the first end of the line
-            .attr("x2", x1)     // x position of the second end of the line
-            .attr("y2", y2)
+        lineChart.props.removeLine(i)
     }
 
     render() {
