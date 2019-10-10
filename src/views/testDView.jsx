@@ -9,26 +9,31 @@ export class TestD3View extends React.Component {
         svg: ''
     }
 
+    width = 1200
+    height = 800
+    timelineHeight = 100
+    chartHeight = 500
+
     data = [[1991, 34], [1992, 55], [1993,67], [1994, 98], [1995, 92]]
 
     timelineData = this.data.map(d => [new Date(d[0], 1), 0])
     chartData = this.data.map(d => [new Date(d[0], 1), d[1]])
 
     sharedOptions = {
-        width: 1000,
+        width: this.width,
         color: colors.evOrange,
         margin_left: 10
     }
 
     chartOptions = {
         data: this.chartData,
-        height: 600,
-        margin_top: 100
+        height: this.chartHeight,
+        margin_top: this.timelineHeight
     }
 
     timelineOptions = {
         data: this.timelineData,
-        height: 100,
+        height: this.timelineHeight,
         xaxis: { show: false },
         yaxis: { show: false },
         markers: {
@@ -49,15 +54,15 @@ export class TestD3View extends React.Component {
 
         svg = d3.select(this.refs.chartcanvas)
                 .append('svg')
-                .attr('width', 1000)
-                .attr('height', 800)
+                .attr('width', this.width)
+                .attr('height', this.height)
                 .append('g').attr('transform', 'translate(60,10)')
 
         this.setState({ svg })
     }
 
     drawDashedLineDown(i, x1, y1) {
-        const y2 = parseInt(y1) + this.chartOptions.height + this.timelineOptions.height
+        const y2 = parseInt(y1) + this.chartHeight + this.timelineHeight
         
         this.state.svg.append("line")
             .style("stroke", colors.evGrayDark)
