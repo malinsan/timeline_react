@@ -42,7 +42,9 @@ export class TestD3View extends React.Component {
             hoverSize: 10,
         },
         drawLine: (i,x,y) => this.drawDashedLineDown(i,x,y),
-        removeLine: (i) => this.removeLine(i)
+        removeLine: (i) => this.removeLine(i),
+        drawTooltip: (i,x,y) => this.drawTooltip(i,x,y),
+        removeTooltip: (i) => this.removeTooltip(i)
     }
 
     componentDidMount() {
@@ -68,7 +70,7 @@ export class TestD3View extends React.Component {
             .style("stroke", colors.evGrayDark)
             .attr("class", `line_${i}`)
             .attr('stroke-width', 1)
-            .attr('stroke-dasharray', 4)
+            .attr('stroke-dasharray', 4) // Makes the line dashed
             .attr("x1", x1)
             .attr("y1", y1)
             .attr("x2", x1)
@@ -77,6 +79,35 @@ export class TestD3View extends React.Component {
 
     removeLine(i) {
         d3.select(`.line_${i}`).remove()
+    }
+
+    drawTooltip(i,x,cy) {
+        let id = `tooltip_${i}`
+
+        if (!d3.select(`#${id}`).empty()) { return }
+
+        const y = parseInt(cy) + this.chartHeight + this.timelineHeight
+
+        let tooltip = this.state.svg.append('rect')
+                                .attr('id', id)
+                                .attr('fill', colors.evDarkGreen)
+                                .attr('width', 100)
+                                .attr('height', 50)
+                                .attr('x', `${x}px`)
+                                .attr('y', `${y}px`)
+                                .attr('opacity', 0)
+
+        tooltip.transition().duration(200).style('opacity', 0.9)
+    }
+
+    removeTooltip(i) {
+        let id = `tooltip_${i}`
+        let tooltip = d3.select(`#${id}`)
+
+        tooltip.transition()
+            .duration(300)
+            .style('opacity', 0.0)
+            .remove()
     }
 
     render() {

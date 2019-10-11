@@ -29,7 +29,7 @@ export class LineChart extends React.Component {
             .attr('width', width)
             .attr('transform', `translate(0,${margin_top || 0})`)
 
-         // X AXIS
+        // X AXIS
         var xScale = d3.scaleTime() 
                     .domain(d3.extent(data, d => d[0])).nice()
                     .range([0, width]);
@@ -47,40 +47,42 @@ export class LineChart extends React.Component {
 
         // PATH
         var line = d3.line()
-                    .x(d => xScale(d[0])) // set the x values for the line generator
-                    .y(d => yScale(d[1])) // set the y values for the line generator 
-                    .curve(d3.curveCardinal) // apply smoothing to the line
+                    .x(d => xScale(d[0]))
+                    .y(d => yScale(d[1]))
+                    .curve(d3.curveCardinal)
 
         // DRAWING
         if (!xaxis || xaxis && xaxis.show) {
             chart.append('g')
+                .attr('id', 'xaxis')
                 .attr('transform', `translate(0,${height})`)
                 .call(xAxis)
         }
 
         if (!yaxis || yaxis && yaxis.show) {
             chart.append('g')
-            .call(yAxis)
+                .attr('id', 'yaxis')
+                .call(yAxis)
         }
 
         chart.append('path')
-        .attr('fill', 'none')
-        .attr('stroke', color)
-        .attr('stroke-width', 1.5)
-        .attr('d', line(data))
+            .attr('fill', 'none')
+            .attr('stroke', color)
+            .attr('stroke-width', 1.5)
+            .attr('d', line(data))
 
         // MARKERS
         if (markers) {
-            chart.selectAll(".dot")
-            .data(data)
-            .enter().append("circle")
-            .attr("class", "dot")
-            .attr("cx", d => xScale(d[0]))
-            .attr("cy", d => yScale(d[1]))
-            .attr('r', markers.size || 5)
-            .attr('fill', markers.color)
-            .on('mouseover', this.handleMouseOver)
-            .on("mouseout", this.handleMouseOut)
+            chart.selectAll('.dot')
+                .data(data)
+                .enter().append("circle")
+                .attr("class", "dot")
+                .attr("cx", d => xScale(d[0]))
+                .attr("cy", d => yScale(d[1]))
+                .attr('r', markers.size || 5)
+                .attr('fill', markers.color)
+                .on('mouseover', this.handleMouseOver)
+                .on("mouseout", this.handleMouseOut)
         }
 
         this.setState({ svg })
@@ -90,8 +92,13 @@ export class LineChart extends React.Component {
         let marker = d3.select(markerList[i])
         marker.attr('r', lineChart.props.markers.hoverSize || marker.attr('r') * 2)
 
-        //lineChart.props.callback(marker.attr('cx'), marker.attr('cy'))
         lineChart.props.drawLine(i, marker.attr('cx'), marker.attr('cy'))
+
+       /*  let bbox = document.getElementById('xaxis').getBoundingClientRect()
+        let xaxis = d3.select('#xaxis')
+        console.log(xaxis.attr('x'))
+        console.log(bbox) */
+        lineChart.props.drawTooltip(i, marker.attr('cx'), marker.attr('cy'))
     }
 
     handleMouseOut(lineChart, obj, i, markerList) {
@@ -99,6 +106,9 @@ export class LineChart extends React.Component {
         marker.attr('r', lineChart.props.markers.size || 5)
 
         lineChart.props.removeLine(i)
+        lineChart.props.removeTooltip(i)
+
+        console.log(d3.select('#xaxis').attr('transform'))
     }
 
     render() {
