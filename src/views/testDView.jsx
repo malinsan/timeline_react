@@ -66,36 +66,42 @@ export class TestD3View extends React.Component {
     drawDashedLineDown(i, x1, y1) {
         const y2 = parseInt(y1) + this.chartHeight + this.timelineHeight
         
-        this.state.svg.append("line")
-            .style("stroke", colors.evGrayDark)
-            .attr("class", `line_${i}`)
-            .attr('stroke-width', 1)
-            .attr('stroke-dasharray', 4) // Makes the line dashed
-            .attr("x1", x1)
-            .attr("y1", y1)
-            .attr("x2", x1)
-            .attr("y2", y2)
+        this.state.svg.append('line')
+                    .style('stroke', colors.evGrayDark)
+                    .attr('class', `line_${i}`)
+                    .attr('stroke-width', 1)
+                    .attr('stroke-dasharray', 4) // Dashnumber here
+                    .attr('x1', x1)
+                    .attr('y1', y1)
+                    .attr('x2', x1)
+                    .attr('y2', y2)
     }
 
     removeLine(i) {
         d3.select(`.line_${i}`).remove()
     }
 
-    drawTooltip(i,x,cy) {
+    drawTooltip(i,cx,cy) {
         let id = `tooltip_${i}`
 
         if (!d3.select(`#${id}`).empty()) { return }
 
+        let width = 100
         const y = parseInt(cy) + this.chartHeight + this.timelineHeight
+        const x = parseInt(cx) - width/2
 
-        let tooltip = this.state.svg.append('rect')
-                                .attr('id', id)
-                                .attr('fill', colors.evDarkGreen)
-                                .attr('width', 100)
-                                .attr('height', 50)
-                                .attr('x', `${x}px`)
-                                .attr('y', `${y}px`)
-                                .attr('opacity', 0)
+        let tooltip = this.state.svg.append('g')
+                                    .attr('id', id)
+                                    .attr('width', width)
+                                    .attr('height', 70)
+                                    .attr('transform', `translate(${x}, ${y})`)
+                                    .attr('fill', colors.evDarkGreen)
+                                    .attr('opacity', 0)
+                                    
+        
+        tooltip.append('rect')
+                .attr('width', width)
+                .attr('height', 50)
 
         tooltip.transition().duration(200).style('opacity', 0.9)
     }
