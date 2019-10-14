@@ -84,26 +84,44 @@ export class TestD3View extends React.Component {
     drawTooltip(i,cx,cy) {
         let id = `tooltip_${i}`
 
-        if (!d3.select(`#${id}`).empty()) { return }
+        if (!d3.select(`#${id}`).empty()) { return } // Dont draw new if tooltip already exists
 
-        let width = 100
+        const width = 100
+        const height = 70
+        const triangleSide = 15
+        const fontSize = 14
+        const x = parseInt(cx) - width/2 // place in middle of dashed line
         const y = parseInt(cy) + this.chartHeight + this.timelineHeight
-        const x = parseInt(cx) - width/2
 
         let tooltip = this.state.svg.append('g')
                                     .attr('id', id)
                                     .attr('width', width)
-                                    .attr('height', 70)
+                                    .attr('height', height)
+                                    .attr('text-align', 'center')
                                     .attr('transform', `translate(${x}, ${y})`)
                                     .attr('fill', colors.evDarkGreen)
                                     .attr('opacity', 0)
-                                    
-        
-        tooltip.append('rect')
-                .attr('width', width)
-                .attr('height', 50)
 
-        tooltip.transition().duration(200).style('opacity', 0.9)
+        // TRIANGLE
+        tooltip.append('polygon')
+            .attr('points', `${width/2 - triangleSide/2},${triangleSide} ${width/2},0 ${width/2 + triangleSide/2},${triangleSide}`)
+        // RECTANGLE
+        tooltip.append('polygon')
+            .attr('points', `0,${triangleSide} ${width},${triangleSide} ${width},${height} 0,${height}`)
+            .attr('stroke-linejoin', 'round')
+            .attr('stroke-width', 6)
+            .attr('stroke', colors.evDarkGreen)
+        // TEXT
+        tooltip.append('g')
+            .append('text')
+            .text('Hallå eller')
+            .attr('fill', 'white')
+            .attr('text-anchor', 'middle')
+            .attr('font-size', fontSize)
+            .attr('x', width/2)
+            .attr('y', triangleSide + height/2.5)
+
+        tooltip.transition().duration(200).style('opacity', .8)
     }
 
     removeTooltip(i) {
